@@ -23,13 +23,13 @@ Base.@kwdef struct Config
     n_test::Int = 100
     knn_neighbors::Int = 15
     device_threshold::Int = 40
-    classifier::String = "kNN"        #GMM or kNN 
-    method::String = "Authentication" #RogueDetection or Authentication
+    classifier::String = "GMM"        #GMM or kNN 
+    method::String = "RogueDetection" #RogueDetection or Authentication
     train_features::Bool = false
-    training_path::String = "/LoRa_RFFI/dataset/Train/dataset_training_no_aug.h5"
-    enrollment_path::String = "/LoRa_RFFI/dataset/Test/dataset_residential.h5"
-    authentication_path::String = "/LoRa_RFFI/dataset/Test/channel_problem/A.h5"
-    rogue_path::String = "/LoRa_RFFI/dataset/Test/dataset_rogue.h5"
+    training_path::String = "/Users/ebothere/Documents/Code/These_Emma/Dataset/LoRa_RFFI/dataset/Train/dataset_training_no_aug.h5"
+    enrollment_path::String = "/Users/ebothere/Documents/Code/These_Emma/Dataset/LoRa_RFFI/dataset/Test/dataset_residential.h5"
+    authentication_path::String = "/Users/ebothere/Documents/Code/These_Emma/Dataset/LoRa_RFFI/dataset/Test/channel_problem/A.h5"
+    rogue_path::String = "/Users/ebothere/Documents/Code/These_Emma/Dataset/LoRa_RFFI/dataset/Test/dataset_rogue.h5"
     feature_file::String = "selected_indexes.bin"
     lda_file::String = "lda_proj.bin"
     roc_file::String = "ROCcurve.png"
@@ -335,20 +335,32 @@ end
 # Rogue detection
 # =============================================================================
 
-function roc_curve(scores, labels, threshold)
+function roc_curve(scores, labels, threshold, classifier)
     auth = scores[labels .<= threshold]
     rogue = scores[labels .> threshold]
+
     thresholds = range(minimum(scores), maximum(scores), length=100)
     tpr, fpr = Float64[], Float64[]
 
     for value in thresholds
-        tp = sum(rogue .< value)
-        fn = sum(rogue .>= value)
-        fp = sum(auth .< value)
-        tn = sum(auth .>= value)
-        push!(tpr, tp / (tp + fn))
-        push!(fpr, fp / (fp + tn))
+        if classifier == "GMM"
+            # Score élevé = authentique
+            tp = sum(auth .>= value)
+            fn = sum(auth .< value)
+            fp = sum(rogue .>= value)
+            tn = sum(rogue .< value)
+        else
+            # Score faible = authentique (distance kNN)
+            tp = sum(auth .<= value)
+            fn = sum(auth .> value)
+            fp = sum(rogue .<= value)
+            tn = sum(rogue .> value)
+        end
+
+        push!(tpr, tp / max(tp + fn, 1))
+        push!(fpr, fp / max(fp + tn, 1))
     end
+
     return fpr, tpr
 end
 
@@ -357,7 +369,7 @@ function detect_rogues(X, labels, enrollment, config)
         gmm_scores(X, enrollment.model) :
         knn_scores(X, enrollment.model, config.knn_neighbors)
 
-    fpr, tpr = roc_curve(scores, labels, config.device_threshold)
+    fpr, tpr = roc_curve(scores, labels, config.device_threshold,config.classifier)
     auc = compute_auc(fpr, tpr)
     eer = compute_eer(fpr, tpr)
 
