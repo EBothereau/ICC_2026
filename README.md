@@ -4,6 +4,8 @@ This repository contains the code associated with the following publication:
 
 > E. Bothereau et al., "Lightweight Preprocessing and Feature Extraction for LoRa RF Fingerprint Identification," *IEEE International Conference on Communications (ICC)*, Glasgow, United Kingdom, 2026, pp. 1–6.  
 > DOI: 10.1109/ICC59461.2026.11587750
+>
+> https://ieeexplore.ieee.org/abstract/document/11587750
 
 The code provided in this repository was used as the basis for generating the experimental results presented in the paper. It implements the preprocessing, feature extraction, device enrollment, authentication, and rogue-device detection pipeline described in the proposed approach.
 
