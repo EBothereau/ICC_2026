@@ -1,4 +1,4 @@
-#Code proposed By Emma Bothereau
+#Code presented By Emma Bothereau
 
 using Serialization
 using GLMakie
