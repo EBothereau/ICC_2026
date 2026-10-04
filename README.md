@@ -23,7 +23,6 @@ The main processing pipeline is implemented in Julia and includes:
 The main files are:
 
 - `main.jl`: main execution pipeline and experimental configuration;
-- `utils.jl`: signal preprocessing, data loading, and evaluation utilities;
 - `selected_indexes.bin`: list of selected feature indexes obtained during feature selection;
 - `lda_proj.bin`: LDA projection matrix used for dimensionality reduction.
 
