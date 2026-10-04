@@ -5,3 +5,6 @@ E. Bothereau et al., "Lightweight Preprocessing and Feature Extraction for LoRa 
 
 This code is the basis used for the generation of the presented results. 
 
+
+
+selected_indexes.bin and lda_proj.bin respectively presents the I index list and the M projection matrix. 
