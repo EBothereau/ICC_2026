@@ -1,5 +1,5 @@
-#Code presented By Emma Bothereau
-
+#Code presented By Emma Bothereau - october 2026
+#"Lightweight Preprocessing and Feature Extraction for LoRa RF Fingerprint Identification," ICC 2026 - IEEE International Conference on Communications, Glasgow, United Kingdom, 2026, pp. 1-6, doi: 10.1109/ICC59461.2026.11587750.
 using Serialization
 using GLMakie
 using PyCall
@@ -28,10 +28,10 @@ Base.@kwdef struct Config
     classifier::String = "GMM"        #GMM or kNN 
     method::String = "RogueDetection" #RogueDetection or Authentication
     train_features::Bool = false
-    training_path::String = "/Users/ebothere/Documents/Code/These_Emma/Dataset/LoRa_RFFI/dataset/Train/dataset_training_no_aug.h5"
-    enrollment_path::String = "/Users/ebothere/Documents/Code/These_Emma/Dataset/LoRa_RFFI/dataset/Test/dataset_residential.h5"
-    authentication_path::String = "/Users/ebothere/Documents/Code/These_Emma/Dataset/LoRa_RFFI/dataset/Test/channel_problem/A.h5"
-    rogue_path::String = "/Users/ebothere/Documents/Code/These_Emma/Dataset/LoRa_RFFI/dataset/Test/dataset_rogue.h5"
+    training_path::String = "/LoRa_RFFI/dataset/Train/dataset_training_no_aug.h5"
+    enrollment_path::String = "/LoRa_RFFI/dataset/Test/dataset_residential.h5"
+    authentication_path::String = "/LoRa_RFFI/dataset/Test/channel_problem/A.h5"
+    rogue_path::String = "/LoRa_RFFI/dataset/Test/dataset_rogue.h5"
     feature_file::String = "selected_indexes.bin"
     lda_file::String = "lda_proj.bin"
     roc_file::String = "ROCcurve.png"
